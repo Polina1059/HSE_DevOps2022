@@ -2,9 +2,9 @@ name: practice 01.02.2022
 
 on:
  push:
-  branches: [ main ]
+  branches: [ L2 ]
  pull_request:
-  branches: [ main ]
+  branches: [ L2 ]
 
  workflow_dispatch:
 env:
@@ -22,7 +22,7 @@ jobs:
 
  build:
 #   needs: [sys_info]
-  runs-on: windows-latest
+  runs-on: windows-2019
 #  env:
 #   local_env: job_print_env
   steps:
