@@ -1,0 +1,44 @@
+name: main
+
+on:
+ push:
+  branches: [ main ]
+ pull_request:
+  branches: [ main ]
+
+ workflow_dispatch:
+ 
+env:
+ global_env: global
+
+
+jobs:
+ sys_info:
+  runs-on: ubuntu-latest
+  env:
+   local_env: job
+
+  steps:
+  # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+   - uses: actions/checkout@v2
+
+   - name: Run a one-line script
+     run: echo Hello, world!
+
+   - name: user
+     run: uname
+   - name: sysinfo
+     run: |
+       pwd
+       lshw
+   - name: print env
+     run: echo ${{ github.job }}
+
+ env:
+  runs-on: ubuntu-latest
+  env:
+   local_env: job_print_env
+
+  steps:
+    - name: print env
+      run: env
