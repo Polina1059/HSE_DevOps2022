@@ -2,9 +2,9 @@ name: practice 01.02.2022
 
 on:
  push:
-  branches: [ L2 ]
+  branches: [ main ]
  pull_request:
-  branches: [ L2 ]
+  branches: [ main ]
 
  workflow_dispatch:
 env:
@@ -30,8 +30,8 @@ jobs:
 
     - name: build
       run: |
-         g++ main.cpp -o app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}
-         ./app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}  
+        g++ main.cpp -o app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}
+#        ./app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}  
 
     - name: Upload a build artifact
       uses: actions/upload-artifact@v2.3.1
