@@ -34,7 +34,7 @@ jobs:
          ./app_${RUNNER_OS}_ver.${GITHUB_RUN_NUMBER}  
         # запустили приложение
 
-			   #создание артефакта для linux
+    # создание артефакта для linux
     - name: Upload a build artifact
       uses: actions/upload-artifact@v2.3.1
       with:
