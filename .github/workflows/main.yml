@@ -23,7 +23,7 @@ jobs:
 
  build:
 #  needs: [sys_info]
-  runs-on: macos-latest
+  runs-on: windows-2022
 
   steps:
     - uses: actions/checkout@v2
