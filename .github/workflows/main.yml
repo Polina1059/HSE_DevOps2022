@@ -19,7 +19,7 @@ jobs:
         os: [ubuntu-latest, macos-latest]
 
     env:
-      app_name: app-${RUNNER_OS}${{ matrix.os }}_ver.${GITHUB_RUN_NUMBER}
+      app_name: app-${{ matrix.os }}${{ matrix.gcc_o }}_ver.${{ github.run_number }}
 
     steps:
       - uses: actions/checkout@v2
@@ -32,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v2.3.1
         with:
           name: my_app 
-          path: ${{ env.app_name }}   
+          path: ./${{ env.app_name }} 
           retention-days: 1  
 
 
