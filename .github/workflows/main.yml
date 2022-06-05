@@ -20,7 +20,7 @@ jobs:
       os: [ ubuntu-latest, macos-latest ]
   
   env:
-    app_name: app_${RUNNER_OS}${{ matrix.os }}_ver.${GITHUB_RUN_NUMBER}
+    app_name: app-${RUNNER_OS}${{ matrix.os }}_ver.${GITHUB_RUN_NUMBER}
   
   steps:
     - uses: actions/checkout@v2
