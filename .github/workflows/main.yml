@@ -35,24 +35,24 @@ jobs:
           path: ./${{ env.app_name }} 
 
 
-  build_win:
-    runs-on: windows-2022
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ilammy/msvc-dev-cmd@v1
-      - name: build
-        run: cl /EHsc hello.cpp
+#   build_win:
+#     runs-on: windows-2022
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: ilammy/msvc-dev-cmd@v1
+#       - name: build
+#         run: cl /EHsc hello.cpp
 
-      - name: Upload a build artifact
-        uses: actions/upload-artifact@v2.3.1
-        with:
-          name: ${{ env.artifact_name }}
-          path: hello.exe 
+#       - name: Upload a build artifact
+#         uses: actions/upload-artifact@v2.3.1
+#         with:
+#           name: ${{ env.artifact_name }}
+#           path: hello.exe 
 
   report:
    if: failure()
    runs-on: ubuntu-20.04
-   needs: [build, build_win]
+   needs: [build]
    steps:
      - name: send telegram message on push
        uses: appleboy/telegram-action@master 
@@ -69,7 +69,7 @@ jobs:
 
   export:
    runs-on: ubuntu-20.04
-   needs: [build, build_win] 
+   needs: [build] 
    steps:
      - name: Download a Build Artifact
        uses: actions/download-artifact@v3.0.0
