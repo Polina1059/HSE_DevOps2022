@@ -9,7 +9,7 @@ on:
  workflow_dispatch:
 
 env:
- global_env: global
+ artifact_name: app_ver_${{ github.sha }}
 
 jobs:
   build:
@@ -19,7 +19,7 @@ jobs:
         os: [ubuntu-20.04, macos-11]
 
     env:
-      app_name: app-${{ matrix.os }}${{ matrix.gcc_o }}_ver.${{ github.run_number }}
+      app_name: app-${{ matrix.os }}_ver.${{ github.run_number }}
 
     steps:
       - uses: actions/checkout@v2
@@ -31,9 +31,8 @@ jobs:
       - name: Upload a build artifact
         uses: actions/upload-artifact@v2.3.1
         with:
-          name: my_app 
+          name: ${{ env.artifact_name }}
           path: ./${{ env.app_name }} 
-          retention-days: 1  
 
 
   build_win:
@@ -47,7 +46,47 @@ jobs:
       - name: Upload a build artifact
         uses: actions/upload-artifact@v2.3.1
         with:
-          name: my_app
+          name: ${{ env.artifact_name }}
           path: hello.exe 
-          retention-days: 1 
 
+  report:
+   if: failure()
+   runs-on: ubuntu-20.04
+   needs: [build, build_win]
+   steps:
+     - name: send telegram message on push
+       uses: appleboy/telegram-action@master 
+       with:
+         to: ${{ secrets.TELEGRAM_TO }}   
+         token: ${{ secrets.TELEGRAM_TOKEN }}
+         message: |
+           ${{ github.actor }} created commit:
+           Commit message: ${{ github.event.commits[0].message }}
+
+           Repository: ${{ github.repository }}
+
+           See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+
+  export:
+   runs-on: ubuntu-20.04
+   needs: [build, build_win] 
+   steps:
+     - name: Download a Build Artifact
+       uses: actions/download-artifact@v3.0.0
+       with:
+         name: ${{ env.artifact_name }}
+         
+     - name: send telegram message on push
+       uses: appleboy/telegram-action@master
+       with: 
+         to: ${{ secrets.TELEGRAM_TO }}   
+         token: ${{ secrets.TELEGRAM_TOKEN }}
+         document: app_**
+         message: |
+           ${{ github.actor }} created commit:
+           Commit message: ${{ github.event.commits[0].message }}
+
+           Repository: ${{ github.repository }}
+
+           See changes: https://github.com/${{ github.repository }}/commit/${{github.sha}}
+           
